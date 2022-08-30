@@ -16,5 +16,10 @@ namespace Tetriz
             }
             Console.WriteLine("Zzz");
         }
+
+        private int[] Offset()
+        {
+            return new int[] { 1, 2 };
+        }
     }
 }

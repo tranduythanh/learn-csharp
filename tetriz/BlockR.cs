@@ -2,12 +2,19 @@ namespace Tetriz
 {
     class BlockR : IBlock
     {
-        public override List<List<String>> Data()
+        private List<List<String>> _data;
+
+        public BlockR()
         {
-            return new List<List<String>>() {
+            _data = new List<List<String>>() {
                 new List<String>() {AtomBlock._, AtomBlock.x, AtomBlock.x},
                 new List<String>() {AtomBlock.x, AtomBlock.x, AtomBlock._},
             };
+        }
+
+        public override List<List<String>> Data()
+        {
+            return this._data;
         }
     }
 }

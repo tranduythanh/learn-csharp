@@ -2,13 +2,21 @@ namespace Tetriz
 {
     class BlockJ : IBlock
     {
-        public override List<List<String>> Data()
+        private List<List<String>> _data;
+
+        public BlockJ()
         {
-            return new List<List<String>>() {
+            _data = new List<List<String>>() {
                 new List<String>() {AtomBlock._, AtomBlock.x},
                 new List<String>() {AtomBlock._, AtomBlock.x},
                 new List<String>() {AtomBlock.x, AtomBlock.x},
             };
+        }
+
+
+        public override List<List<String>> Data()
+        {
+            return this._data;
         }
     }
 }
