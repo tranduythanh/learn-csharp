@@ -1,6 +1,6 @@
 namespace Tetriz
 {
-    class BlockT : IBlock
+    class BlockI : IBlock
     {
         public override List<List<String>> Data()
         {
