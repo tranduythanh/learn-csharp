@@ -1,0 +1,7 @@
+namespace Tetriz
+{
+    class Background
+    {
+
+    }
+}

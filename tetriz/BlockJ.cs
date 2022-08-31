@@ -2,19 +2,22 @@ namespace Tetriz
 {
     class BlockJ : IBlock
     {
-        private List<List<String>> _data;
+        private BlockData _data;
 
         public BlockJ()
         {
-            _data = new List<List<String>>() {
+            Matrix matrix = new Matrix() {
                 new List<String>() {AtomBlock._, AtomBlock.x},
                 new List<String>() {AtomBlock._, AtomBlock.x},
                 new List<String>() {AtomBlock.x, AtomBlock.x},
             };
+
+            Position pos = new Position(0, 0);
+
+            _data = new BlockData(matrix, pos);
         }
 
-
-        public override List<List<String>> Data()
+        public override BlockData Data()
         {
             return this._data;
         }

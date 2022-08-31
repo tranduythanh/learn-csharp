@@ -3,20 +3,23 @@ namespace Tetriz
     class BlockI : IBlock
     {
 
-        private List<List<String>> _data;
+        private BlockData _data;
 
         public BlockI()
         {
-            _data = new List<List<String>>() {
-                new List<String>() {AtomBlock.x},
-                new List<String>() {AtomBlock.x},
-                new List<String>() {AtomBlock.x},
-                new List<String>() {AtomBlock.x},
+            Matrix matrix = new Matrix() {
+                new List<String>() { AtomBlock.x },
+                new List<String>() { AtomBlock.x },
+                new List<String>() { AtomBlock.x },
+                new List<String>() { AtomBlock.x },
             };
+
+            Position pos = new Position(0, 0);
+
+            _data = new BlockData(matrix, pos);
         }
 
-
-        public override List<List<String>> Data()
+        public override BlockData Data()
         {
             return this._data;
         }

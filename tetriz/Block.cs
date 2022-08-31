@@ -1,12 +1,16 @@
+
+
 namespace Tetriz
 {
+
     abstract class IBlock
     {
-        public abstract List<List<String>> Data();
+        public abstract BlockData Data();
 
         public void Print()
         {
-            foreach (List<String> row in this.Data())
+            BlockData bData = this.Data();
+            foreach (List<String> row in bData.Matrix)
             {
                 foreach (String item in row)
                 {
@@ -14,12 +18,28 @@ namespace Tetriz
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("Zzz");
+            Console.WriteLine("Offset: [{0}, {1}]", bData.Offset.X, bData.Offset.Y);
         }
 
-        private int[] Offset()
+
+        protected int[] Rotate90()
         {
             return new int[] { 1, 2 };
+        }
+
+        protected int[] Rotate180()
+        {
+            return new int[] { 1, 2 };
+        }
+
+        protected int[] Rotate270()
+        {
+            return new int[] { 1, 2 };
+        }
+
+        private BlockData Transpose(BlockData bData)
+        {
+            return new BlockData();
         }
     }
 }

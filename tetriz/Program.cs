@@ -1,37 +1,32 @@
-﻿namespace Tetriz
+﻿
+namespace Tetriz
 {
     class Program
     {
+        private static void InitKeyReading()
+        {
+            Thread keyReading = new Thread(ReadKeysThread);
+            keyReading.IsBackground = true;
+            keyReading.Start();
+        }
+
+        private static void ReadKeysThread()
+        {
+            while (true)
+            {
+                ConsoleKey keyPressed = Console.ReadKey(true).Key;
+                Console.WriteLine(keyPressed);
+                // currentScreen.HandleKey(keyPressed);
+            }
+        }
+
         static void Main()
         {
-            IBlock block;
-            block = new BlockT();
-            block.Print();
-            Console.WriteLine();
+            InitKeyReading();
 
-            block = new BlockR();
-            block.Print();
-            Console.WriteLine();
-
-            block = new BlockJ();
-            block.Print();
-            Console.WriteLine();
-
-            block = new BlockL();
-            block.Print();
-            Console.WriteLine();
-
-            block = new BlockO();
-            block.Print();
-            Console.WriteLine();
-
-            block = new BlockZ();
-            block.Print();
-            Console.WriteLine();
-
-            block = new BlockI();
-            block.Print();
-            Console.WriteLine();
+            Screen screen = new Screen();
+            screen.Run();
+            System.Threading.Thread.Sleep(10000);
         }
     }
 }
