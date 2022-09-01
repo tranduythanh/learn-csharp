@@ -44,6 +44,7 @@ namespace Tetriz
 
             // set init position to block
             this._currentBlock.ToCenterX(this._width);
+            this._currentBlock.ToHighestPosition();
         }
 
         public void HandleKey(ConsoleKey key)
@@ -90,7 +91,10 @@ namespace Tetriz
                         if (this._background.CanMoveDown(this._currentBlock))
                             this._currentBlock.MoveDown();
                         else
+                        {
+                            PrepareForNextTurn();
                             break;
+                        }
                     }
                     Draw();
                     break;
@@ -112,6 +116,15 @@ namespace Tetriz
             Console.WriteLine();
         }
 
+        private void PrepareForNextTurn()
+        {
+            this._background.MergeBlock(this._currentBlock);
+            this._currentBlock = this._nextBlock;
+            this._currentBlock.ToCenterX(this._width);
+            this._currentBlock.ToHighestPosition();
+            this._nextBlock = _randomBlock();
+        }
+
         public void Run()
         {
             Draw();
@@ -123,8 +136,12 @@ namespace Tetriz
                     if (this._background.CanMoveDown(this._currentBlock))
                     {
                         this._currentBlock.MoveDown();
-                        Draw();
                     }
+                    else
+                    {
+                        PrepareForNextTurn();
+                    }
+                    Draw();
                 }
             }
         }

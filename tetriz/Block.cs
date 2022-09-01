@@ -28,6 +28,14 @@ namespace Tetriz
             Console.WriteLine("Height: {0,2}", this.Structure.Height());
         }
 
+        public void ToHighestPosition()
+        {
+            lock (this)
+            {
+                this.OffsetY = -this.Structure.Height();
+            }
+        }
+
         public void ToCenterX(int width)
         {
             lock (this)

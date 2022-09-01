@@ -32,16 +32,28 @@ namespace Tetriz
             {
                 for (int col = 0; col < bMatrix.Width(); col++)
                 {
-                    int pRow = (int)(block.OffsetY + row);
-                    int pCol = (int)(block.OffsetX + col);
                     if (bMatrix[row][col] != Const.X)
                     {
                         continue;
                     }
-                    frame[pRow][pCol] = Const.X;
+                    int pRow = (int)(block.OffsetY + row);
+                    int pCol = (int)(block.OffsetX + col);
+                    if (IsValidPixel(pRow, pCol))
+                    {
+                        frame[pRow][pCol] = Const.X;
+                    }
                 }
             }
             return frame;
+        }
+
+        private Boolean IsValidPixel(int row, int col)
+        {
+            return
+                row >= 0 &&
+                col >= 0 &&
+                row < this._matrix.Height() &&
+                col < this._matrix.Width();
         }
 
         public void MergeBlock(IBlock block)
@@ -58,6 +70,7 @@ namespace Tetriz
                 block.MoveUp();
                 return false;
             };
+            block.MoveUp();
             return true;
         }
 
