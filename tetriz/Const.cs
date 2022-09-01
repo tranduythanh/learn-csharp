@@ -29,5 +29,14 @@ _/  |_  _____/  |________|__|_______
            \/                     \/
 
         ";
+
+        public const string TextGuide = @"
+Move right      →
+Move left:      ←
+Move down:      ↓
+Rotate right:   ↑
+Move to bottom: Space
+Exit:           ESC
+        ";
     }
 }

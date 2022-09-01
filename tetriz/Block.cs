@@ -23,9 +23,9 @@ namespace Tetriz
         {
             Matrix matrix = this.Structure;
             matrix.Print();
-            Console.WriteLine("Offset: [{0,2}, {1,2}]", this.OffsetX, this.OffsetY);
-            Console.WriteLine("Width:  {0,2}", this.Structure.Width());
-            Console.WriteLine("Height: {0,2}", this.Structure.Height());
+            // Console.WriteLine("Offset: [{0,2}, {1,2}]", this.OffsetX, this.OffsetY);
+            // Console.WriteLine("Width:  {0,2}", this.Structure.Width());
+            // Console.WriteLine("Height: {0,2}", this.Structure.Height());
         }
 
         public void ToHighestPosition()

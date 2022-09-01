@@ -148,6 +148,7 @@ namespace Tetriz
             }
             this._nextBlock.Print();
             // Console.WriteLine("Latest Key Pressed {0}", this._keyPressed.ToString());
+            Console.WriteLine();
             Console.WriteLine("Score {0}", this._score);
             Console.WriteLine();
 
@@ -156,6 +157,8 @@ namespace Tetriz
             frame.Print();
             Console.WriteLine();
 
+            Console.WriteLine(Const.TextGuide);
+            Console.WriteLine();
         }
 
         private void PrepareForNextTurn()
