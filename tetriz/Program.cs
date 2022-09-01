@@ -3,6 +3,8 @@ namespace Tetriz
 {
     class Program
     {
+        private static Screen screen;
+
         private static void InitKeyReading()
         {
             Thread keyReading = new Thread(ReadKeysThread);
@@ -12,21 +14,32 @@ namespace Tetriz
 
         private static void ReadKeysThread()
         {
-            while (true)
+            Boolean loop = true;
+            while (loop)
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
-                Console.WriteLine(keyPressed);
-                // currentScreen.HandleKey(keyPressed);
+                switch (keyPressed)
+                {
+                    case ConsoleKey.Escape:
+                        loop = false;
+                        break;
+                    default:
+                        screen.HandleKey(keyPressed);
+                        break;
+                }
             }
+            Console.Clear();
+            Console.WriteLine(Const.TextGameOver);
+            System.Environment.Exit(0);
         }
 
         static void Main()
         {
             InitKeyReading();
-
-            Screen screen = new Screen();
+            screen = new Screen(
+                Const.DefaultScreenWidth,
+                Const.DefaultScreenHeight);
             screen.Run();
-            System.Threading.Thread.Sleep(10000);
         }
     }
 }

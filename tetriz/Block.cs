@@ -5,22 +5,21 @@ namespace Tetriz
 
     abstract class IBlock
     {
-        public abstract BlockData Data();
+        public abstract Matrix Structure();
+        public uint OffsetX { get; } = 0;
+        public uint OffsetY { get; } = 0;
 
         public void Print()
         {
-            BlockData bData = this.Data();
-            foreach (List<String> row in bData.Matrix)
-            {
-                foreach (String item in row)
-                {
-                    Console.Write(item);
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("Offset: [{0}, {1}]", bData.Offset.X, bData.Offset.Y);
+            Matrix matrix = this.Structure();
+            matrix.Print();
+            Console.WriteLine("Offset: [{0}, {1}]", this.OffsetX, this.OffsetY);
         }
 
+        public void MoveDown()
+        {
+
+        }
 
         protected int[] Rotate90()
         {
