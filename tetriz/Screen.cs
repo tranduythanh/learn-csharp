@@ -59,6 +59,7 @@ namespace Tetriz
             lock (this)
             {
                 _HandleKey(key);
+                Console.Beep();
             }
         }
 
@@ -137,27 +138,41 @@ namespace Tetriz
         private void Draw()
         {
             Console.Clear();
+
+            // Info panel
+            Console.WriteLine("Next block:");
+            int padSize = 4 - this._nextBlock.Structure.Height();
+            for (int i = 0; i < padSize; i++)
+            {
+                Console.WriteLine();
+            }
+            this._nextBlock.Print();
+            // Console.WriteLine("Latest Key Pressed {0}", this._keyPressed.ToString());
+            Console.WriteLine("Score {0}", this._score);
+            Console.WriteLine();
+
+            // Game panel
             Matrix frame = this._background.TryToMergeBlock(this._currentBlock);
             frame.Print();
             Console.WriteLine();
-            this._currentBlock.Print();
-            Console.WriteLine("Latest Key Pressed {0}", this._keyPressed.ToString());
-            Console.WriteLine("Score {0}", this._score);
-            Console.WriteLine();
+
         }
 
         private void PrepareForNextTurn()
         {
-            this._background.MergeBlock(this._currentBlock);
-            Scoring();
-            this._currentBlock = this._nextBlock;
-            this._currentBlock.ToCenterX(this._width);
-            this._currentBlock.ToHighestPosition();
-            this._nextBlock = _randomBlock();
-
-            if (!this._background.CanMoveDown(this._currentBlock))
+            lock (this)
             {
-                GameOver();
+                this._background.MergeBlock(this._currentBlock);
+                Scoring();
+                this._currentBlock = this._nextBlock.Clone();
+                this._nextBlock = _randomBlock();
+                this._currentBlock.ToCenterX(this._width);
+                this._currentBlock.ToHighestPosition();
+
+                if (!this._background.CanMoveDown(this._currentBlock))
+                {
+                    GameOver();
+                }
             }
         }
 
@@ -168,6 +183,7 @@ namespace Tetriz
             {
                 this._score += delta;
                 this._background.EraseFilledRows();
+                Console.Beep();
             }
         }
 
@@ -175,6 +191,7 @@ namespace Tetriz
         {
             Draw();
             Console.WriteLine(Const.TextGameOver);
+            Console.CursorVisible = true;
             System.Environment.Exit(0);
         }
 
@@ -199,6 +216,7 @@ namespace Tetriz
 
         public void Run()
         {
+            Console.CursorVisible = false;
             Draw();
             while (true)
             {

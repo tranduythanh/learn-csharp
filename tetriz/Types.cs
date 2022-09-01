@@ -74,7 +74,7 @@ namespace Tetriz
             int i = 0;
             foreach (List<String> row in this)
             {
-                Console.Write("{0,2} ", i);
+                Console.Write("  ");
                 foreach (String item in row)
                 {
                     Console.Write(item);

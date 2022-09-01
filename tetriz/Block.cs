@@ -5,7 +5,7 @@ namespace Tetriz
 
     abstract class IBlock
     {
-        public abstract Matrix OriginStructure();
+        protected abstract Matrix OriginStructure();
         public Matrix Structure { get; private set; }
         public int OffsetX { get; private set; } = 0;
         public int OffsetY { get; private set; } = 0;
@@ -124,6 +124,15 @@ namespace Tetriz
                 }
             }
             this.Structure = newStructure;
+        }
+
+        public IBlock Clone()
+        {
+            IBlock newBlock = new BlockT();
+            newBlock.Structure = this.Structure;
+            newBlock.OffsetX = this.OffsetX;
+            newBlock.OffsetY = this.OffsetY;
+            return newBlock;
         }
     }
 }
