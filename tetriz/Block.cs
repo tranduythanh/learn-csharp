@@ -76,13 +76,20 @@ namespace Tetriz
             }
         }
 
-        public void Rotate90()
+        public void RotateRight()
         {
             lock (this)
             {
                 Transpose();
                 Mirror();
             }
+        }
+
+        public void RotateLeft()
+        {
+            RotateRight();
+            RotateRight();
+            RotateRight();
         }
 
         private void Transpose()

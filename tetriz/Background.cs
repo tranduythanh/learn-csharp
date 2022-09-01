@@ -101,6 +101,26 @@ namespace Tetriz
 
         public Boolean HasCollision(IBlock block)
         {
+            Matrix bMatrix = block.Structure;
+            for (int row = 0; row < bMatrix.Height(); row++)
+            {
+                for (int col = 0; col < bMatrix.Width(); col++)
+                {
+                    if (bMatrix[row][col] != Const.X)
+                    {
+                        continue;
+                    }
+                    int pRow = (int)(block.OffsetY + row);
+                    int pCol = (int)(block.OffsetX + col);
+                    if (IsValidPixel(pRow, pCol))
+                    {
+                        if (this._matrix[pRow][pCol] == Const.X)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
             return false;
         }
 

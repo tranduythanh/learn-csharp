@@ -61,26 +61,35 @@ namespace Tetriz
             {
                 case ConsoleKey.LeftArrow:
                     this._currentBlock.MoveLeft();
-                    if (this._background.IsOutOfMarginLeft(this._currentBlock))
+                    if (
+                        this._background.IsOutOfMarginLeft(this._currentBlock) ||
+                        this._background.HasCollision(this._currentBlock))
+                    {
                         this._currentBlock.MoveRight();
+                    }
                     Draw();
                     break;
 
                 case ConsoleKey.RightArrow:
                     this._currentBlock.MoveRight();
-                    if (this._background.IsOutOfMarginRight(this._currentBlock))
+                    if (
+                        this._background.IsOutOfMarginRight(this._currentBlock) ||
+                        this._background.HasCollision(this._currentBlock))
+                    {
                         this._currentBlock.MoveLeft();
+                    }
                     Draw();
                     break;
 
                 case ConsoleKey.UpArrow:
-                    this._currentBlock.Rotate90();
-                    if (this._background.IsOutOfMarginLeft(this._currentBlock))
-                        this._currentBlock.MoveRight();
-                    if (this._background.IsOutOfMarginRight(this._currentBlock))
-                        this._currentBlock.MoveLeft();
-                    if (this._background.IsOutOfMarginBottom(this._currentBlock))
-                        this._currentBlock.MoveUp();
+                    this._currentBlock.RotateRight();
+                    if (
+                        this._background.IsOutOfMargin(this._currentBlock) ||
+                        this._background.HasCollision(this._currentBlock))
+                    {
+                        this._currentBlock.RotateLeft();
+                    }
+
                     Draw();
                     break;
 
