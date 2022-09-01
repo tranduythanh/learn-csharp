@@ -2,8 +2,8 @@ namespace Tetriz
 {
     public static class Const
     {
-        public const uint DefaultScreenWidth = 20;
-        public const uint DefaultScreenHeight = 30;
+        public const int DefaultScreenWidth = 20;
+        public const int DefaultScreenHeight = 30;
         public const int FrameDelay = 1000; // 1000 millisecond
         public static string X = "██";
         public static string _ = "  ";

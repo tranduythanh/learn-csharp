@@ -7,8 +7,10 @@ namespace Tetriz
         private IBlock _currentBlock;
         private IBlock _nextBlock;
 
-        private uint _width;
-        private uint _height;
+        private ConsoleKey _keyPressed;
+
+        private int _width;
+        private int _height;
 
         private List<IBlock> _blockList = new List<IBlock>()
         {
@@ -29,7 +31,7 @@ namespace Tetriz
             return this._blockList.ElementAt(blockIndex);
         }
 
-        public Screen(uint width, uint height)
+        public Screen(int width, int height)
         {
             this._scoreBoard = new ScoreBoard();
             this._background = new Background(
@@ -39,22 +41,91 @@ namespace Tetriz
             this._nextBlock = this._randomBlock();
             this._width = width;
             this._height = height;
+
+            // set init position to block
+            this._currentBlock.ToCenterX(this._width);
         }
 
         public void HandleKey(ConsoleKey key)
         {
-            Console.WriteLine(key);
+            lock (this)
+            {
+                _HandleKey(key);
+            }
+        }
+
+        private void _HandleKey(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.LeftArrow:
+                    this._currentBlock.MoveLeft();
+                    if (this._background.IsOutOfMarginLeft(this._currentBlock))
+                        this._currentBlock.MoveRight();
+                    Draw();
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    this._currentBlock.MoveRight();
+                    if (this._background.IsOutOfMarginRight(this._currentBlock))
+                        this._currentBlock.MoveLeft();
+                    Draw();
+                    break;
+
+                case ConsoleKey.UpArrow:
+                    this._currentBlock.Rotate90();
+                    if (this._background.IsOutOfMarginLeft(this._currentBlock))
+                        this._currentBlock.MoveRight();
+                    if (this._background.IsOutOfMarginRight(this._currentBlock))
+                        this._currentBlock.MoveLeft();
+                    if (this._background.IsOutOfMarginBottom(this._currentBlock))
+                        this._currentBlock.MoveUp();
+                    Draw();
+                    break;
+
+                case ConsoleKey.Spacebar:
+                case ConsoleKey.DownArrow:
+                    while (true)
+                    {
+                        if (this._background.CanMoveDown(this._currentBlock))
+                            this._currentBlock.MoveDown();
+                        else
+                            break;
+                    }
+                    Draw();
+                    break;
+
+                default:
+                    break;
+            }
+            this._keyPressed = key;
+        }
+
+        private void Draw()
+        {
+            Console.Clear();
+            Matrix frame = this._background.TryToMergeBlock(this._currentBlock);
+            frame.Print();
+            Console.WriteLine();
+            this._currentBlock.Print();
+            Console.WriteLine("Key {0}", this._keyPressed.ToString());
+            Console.WriteLine();
         }
 
         public void Run()
         {
-            this._currentBlock.Print();
-            this._nextBlock.Print();
-            Matrix frame = this._background.TryToMergeBlock(this._currentBlock);
-            frame.Print();
+            Draw();
             while (true)
             {
                 System.Threading.Thread.Sleep(Const.FrameDelay);
+                lock (this)
+                {
+                    if (this._background.CanMoveDown(this._currentBlock))
+                    {
+                        this._currentBlock.MoveDown();
+                        Draw();
+                    }
+                }
             }
         }
     }

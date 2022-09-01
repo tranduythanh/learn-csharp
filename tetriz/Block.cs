@@ -5,40 +5,110 @@ namespace Tetriz
 
     abstract class IBlock
     {
-        public abstract Matrix Structure();
-        public uint OffsetX { get; } = 0;
-        public uint OffsetY { get; } = 0;
+        public abstract Matrix OriginStructure();
+        public Matrix Structure { get; private set; }
+        public int OffsetX { get; private set; } = 0;
+        public int OffsetY { get; private set; } = 0;
+
+        protected IBlock()
+        {
+            if (this.Structure == null)
+            {
+                this.Structure = this.OriginStructure();
+            }
+        }
+
 
         public void Print()
         {
-            Matrix matrix = this.Structure();
+            Matrix matrix = this.Structure;
             matrix.Print();
-            Console.WriteLine("Offset: [{0}, {1}]", this.OffsetX, this.OffsetY);
+            Console.WriteLine("Offset: [{0,2}, {1,2}]", this.OffsetX, this.OffsetY);
+            Console.WriteLine("Width:  {0,2}", this.Structure.Width());
+            Console.WriteLine("Height: {0,2}", this.Structure.Height());
+        }
+
+        public void ToCenterX(int width)
+        {
+            lock (this)
+            {
+                this.OffsetX = width / 2 - 1 - (int)this.Structure.Width() / 2;
+            }
         }
 
         public void MoveDown()
         {
-
+            lock (this)
+            {
+                this.OffsetY += 1;
+            }
         }
 
-        protected int[] Rotate90()
+        public void MoveUp()
         {
-            return new int[] { 1, 2 };
+            lock (this)
+            {
+                this.OffsetY -= 1;
+            }
         }
 
-        protected int[] Rotate180()
+        public void MoveLeft()
         {
-            return new int[] { 1, 2 };
+            lock (this)
+            {
+                this.OffsetX -= 1;
+            }
         }
 
-        protected int[] Rotate270()
+        public void MoveRight()
         {
-            return new int[] { 1, 2 };
+            lock (this)
+            {
+                this.OffsetX += 1;
+            }
         }
 
-        private BlockData Transpose(BlockData bData)
+        public void Rotate90()
         {
-            return new BlockData();
+            lock (this)
+            {
+                Transpose();
+                Mirror();
+            }
+        }
+
+        private void Transpose()
+        {
+            Matrix newStructure = new Matrix();
+            newStructure.Empty(
+                this.Structure.Height(),
+                this.Structure.Width());
+
+            for (int row = 0; row < this.Structure.Height(); row++)
+            {
+                for (int col = 0; col < this.Structure.Width(); col++)
+                {
+                    newStructure[col][row] = this.Structure[row][col];
+                }
+            }
+            this.Structure = newStructure;
+        }
+        private void Mirror()
+        {
+            Matrix newStructure = new Matrix();
+            newStructure.Empty(
+                this.Structure.Width(),
+                this.Structure.Height());
+
+            for (int row = 0; row < this.Structure.Height(); row++)
+            {
+                for (int col = 0; col < this.Structure.Width(); col++)
+                {
+                    int newCol = this.Structure.Width() - col - 1;
+                    newStructure[row][newCol] = this.Structure[row][col];
+                }
+            }
+            this.Structure = newStructure;
         }
     }
 }

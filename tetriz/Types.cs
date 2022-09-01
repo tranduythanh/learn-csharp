@@ -26,18 +26,32 @@ namespace Tetriz
 
     internal class Matrix : List<List<String>>
     {
-        public uint Height()
+        public int Height()
         {
-            return (uint)this.Count();
+            return this.Count();
         }
 
-        public uint Width()
+        public int Width()
         {
             if (this.Count() <= 0)
             {
                 return 0;
             }
-            return (uint)this[0].Count();
+            return this[0].Count();
+        }
+
+        public void Empty(int width, int height)
+        {
+            this.Clear();
+            for (int k = 0; k < height; k++)
+            {
+                List<String> newRow = new List<string>();
+                for (int i = 0; i < width; i++)
+                {
+                    newRow.Add("");
+                }
+                this.Add(newRow);
+            }
         }
 
         public Matrix Clone()
@@ -57,13 +71,16 @@ namespace Tetriz
 
         public void Print()
         {
+            int i = 0;
             foreach (List<String> row in this)
             {
+                Console.Write("{0,2} ", i);
                 foreach (String item in row)
                 {
                     Console.Write(item);
                 }
                 Console.WriteLine();
+                i++;
             }
         }
     };
