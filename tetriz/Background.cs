@@ -124,6 +124,71 @@ namespace Tetriz
             return false;
         }
 
+        public int CountFilledRows()
+        {
+            int count = 0;
+            foreach (var row in this._matrix)
+                if (IsFilledRow(row))
+                    count += 1;
+            return count;
+        }
+
+        public void EraseFilledRows()
+        {
+            // check filled row from top to bottom
+            for (int i = 0; i < this._matrix.Height(); i++)
+            {
+                var row = this._matrix[i];
+                if (IsFilledRow(row))
+                {
+                    TranslationRangeDown(i);
+                }
+            }
+        }
+
+        private void TranslationRangeDown(int targetRowIndex)
+        {
+            if (targetRowIndex < 0)
+            {
+                return;
+            }
+
+            if (targetRowIndex >= this._matrix.Height())
+            {
+                return;
+            }
+
+            // translation upward
+            for (int i = targetRowIndex - 1; i > 0; i--)
+            {
+                TranslateRowIToK(i, i + 1);
+            }
+
+            // clear top row
+            for (int i = 0; i < this._matrix.Width(); i++)
+            {
+                this._matrix[0][i] = Const.Dot;
+            }
+            return;
+        }
+
+        private Boolean IsFilledRow(List<String> row)
+        {
+            foreach (var pixel in row)
+                if (pixel == Const.Dot)
+                    return false;
+            return true;
+        }
+
+        private void TranslateRowIToK(int i, int k)
+        {
+            for (int x = 0; x < this._matrix.Width(); x++)
+            {
+                this._matrix[k][x] = this._matrix[i][x];
+                this._matrix[i][x] = Const.Dot;
+            }
+        }
+
         public void Show()
         {
             this._matrix.Print();

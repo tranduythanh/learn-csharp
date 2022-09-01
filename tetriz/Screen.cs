@@ -2,7 +2,7 @@ namespace Tetriz
 {
     class Screen
     {
-        private ScoreBoard _scoreBoard;
+        private int _score;
         private Background _background;
         private IBlock _currentBlock;
         private IBlock _nextBlock;
@@ -28,12 +28,19 @@ namespace Tetriz
             Random rnd = new Random();
             int blockIndex = rnd.Next(0, this._blockList.Count);
             Console.WriteLine("{0} / {1}", blockIndex, this._blockList.Count);
-            return this._blockList.ElementAt(blockIndex);
+
+            IBlock newBlock = this._blockList.ElementAt(blockIndex);
+            int rotateCount = rnd.Next(0, 4);
+            for (int i = 0; i < rotateCount; i++)
+            {
+                newBlock.RotateRight();
+            }
+            return newBlock;
         }
 
         public Screen(int width, int height)
         {
-            this._scoreBoard = new ScoreBoard();
+            this._score = 0;
             this._background = new Background(
                 Const.DefaultScreenWidth,
                 Const.DefaultScreenHeight);
@@ -93,12 +100,25 @@ namespace Tetriz
                     Draw();
                     break;
 
-                case ConsoleKey.Spacebar:
                 case ConsoleKey.DownArrow:
+                    if (this._background.CanMoveDown(this._currentBlock))
+                    {
+                        this._currentBlock.MoveDown();
+                    }
+                    else
+                    {
+                        PrepareForNextTurn();
+                    }
+                    Draw();
+                    break;
+
+                case ConsoleKey.Spacebar:
                     while (true)
                     {
                         if (this._background.CanMoveDown(this._currentBlock))
+                        {
                             this._currentBlock.MoveDown();
+                        }
                         else
                         {
                             PrepareForNextTurn();
@@ -121,17 +141,60 @@ namespace Tetriz
             frame.Print();
             Console.WriteLine();
             this._currentBlock.Print();
-            Console.WriteLine("Key {0}", this._keyPressed.ToString());
+            Console.WriteLine("Latest Key Pressed {0}", this._keyPressed.ToString());
+            Console.WriteLine("Score {0}", this._score);
             Console.WriteLine();
         }
 
         private void PrepareForNextTurn()
         {
             this._background.MergeBlock(this._currentBlock);
+            Scoring();
             this._currentBlock = this._nextBlock;
             this._currentBlock.ToCenterX(this._width);
             this._currentBlock.ToHighestPosition();
             this._nextBlock = _randomBlock();
+
+            if (!this._background.CanMoveDown(this._currentBlock))
+            {
+                GameOver();
+            }
+        }
+
+        private void Scoring()
+        {
+            int delta = this._background.CountFilledRows();
+            if (delta > 0)
+            {
+                this._score += delta;
+                this._background.EraseFilledRows();
+            }
+        }
+
+        private void GameOver()
+        {
+            Draw();
+            Console.WriteLine(Const.TextGameOver);
+            System.Environment.Exit(0);
+        }
+
+
+        public Boolean MoveDownAndCheck()
+        {
+            if (this._background.CanMoveDown(this._currentBlock))
+            {
+                this._currentBlock.MoveDown();
+                if (!this._background.CanMoveDown(this._currentBlock))
+                {
+                    PrepareForNextTurn();
+                }
+            }
+            else
+            {
+                PrepareForNextTurn();
+                return false;
+            }
+            return true;
         }
 
         public void Run()

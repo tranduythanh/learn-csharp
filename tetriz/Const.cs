@@ -4,7 +4,7 @@ namespace Tetriz
     {
         public const int DefaultScreenWidth = 20;
         public const int DefaultScreenHeight = 30;
-        public const int FrameDelay = 1000; // 1000 millisecond
+        public const int FrameDelay = 600; // 1000 millisecond
         public static string X = "██";
         public static string _ = "  ";
         public static string Dot = "··";
