@@ -6,10 +6,10 @@ namespace Tetriz
 
         public Background(uint width, uint height)
         {
-            this._matrix = Init_matrix(width, height);
+            this._matrix = InitMatrix(width, height);
         }
 
-        private Matrix Init_matrix(uint width, uint height)
+        private Matrix InitMatrix(uint width, uint height)
         {
             Matrix _matrix = new Matrix();
             for (int r = 0; r < height; r++)
@@ -24,6 +24,8 @@ namespace Tetriz
             return _matrix;
         }
 
+        // This does not actually merge block to background.
+        // This just propose a result of merging
         public Matrix TryToMergeBlock(IBlock block)
         {
             Matrix frame = this._matrix.Clone();

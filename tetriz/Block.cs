@@ -126,6 +126,7 @@ namespace Tetriz
             this.Structure = newStructure;
         }
 
+        // Note!!!: Cannot clone method OriginStructure
         public IBlock Clone()
         {
             IBlock newBlock = new BlockT();
