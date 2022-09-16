@@ -18,7 +18,7 @@ namespace Tetriz
             new BlockJ(),
             new BlockL(),
             new BlockO(),
-            new BlockR(),
+            new BlockS(),
             new BlockT(),
             new BlockZ(),
         };

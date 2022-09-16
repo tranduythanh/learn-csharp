@@ -1,6 +1,6 @@
 namespace Tetriz
 {
-    class BlockR : IBlock
+    class BlockS : IBlock
     {
         protected override Matrix OriginStructure() => new Matrix() {
             new List<String>() {Const._, Const.X, Const.X},
