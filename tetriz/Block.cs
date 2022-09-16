@@ -18,6 +18,40 @@ namespace Tetriz
             }
         }
 
+        private void _transpose()
+        {
+            Matrix newStructure = new Matrix();
+            newStructure.Empty(
+                this.Structure.Height(),
+                this.Structure.Width());
+
+            for (int row = 0; row < this.Structure.Height(); row++)
+            {
+                for (int col = 0; col < this.Structure.Width(); col++)
+                {
+                    newStructure[col][row] = this.Structure[row][col];
+                }
+            }
+            this.Structure = newStructure;
+        }
+        private void _mirror()
+        {
+            Matrix newStructure = new Matrix();
+            newStructure.Empty(
+                this.Structure.Width(),
+                this.Structure.Height());
+
+            for (int row = 0; row < this.Structure.Height(); row++)
+            {
+                for (int col = 0; col < this.Structure.Width(); col++)
+                {
+                    int newCol = this.Structure.Width() - col - 1;
+                    newStructure[row][newCol] = this.Structure[row][col];
+                }
+            }
+            this.Structure = newStructure;
+        }
+
 
         public void Print()
         {
@@ -80,8 +114,8 @@ namespace Tetriz
         {
             lock (this)
             {
-                Transpose();
-                Mirror();
+                this._transpose();
+                this._mirror();
             }
         }
 
@@ -92,39 +126,7 @@ namespace Tetriz
             RotateRight();
         }
 
-        private void Transpose()
-        {
-            Matrix newStructure = new Matrix();
-            newStructure.Empty(
-                this.Structure.Height(),
-                this.Structure.Width());
 
-            for (int row = 0; row < this.Structure.Height(); row++)
-            {
-                for (int col = 0; col < this.Structure.Width(); col++)
-                {
-                    newStructure[col][row] = this.Structure[row][col];
-                }
-            }
-            this.Structure = newStructure;
-        }
-        private void Mirror()
-        {
-            Matrix newStructure = new Matrix();
-            newStructure.Empty(
-                this.Structure.Width(),
-                this.Structure.Height());
-
-            for (int row = 0; row < this.Structure.Height(); row++)
-            {
-                for (int col = 0; col < this.Structure.Width(); col++)
-                {
-                    int newCol = this.Structure.Width() - col - 1;
-                    newStructure[row][newCol] = this.Structure[row][col];
-                }
-            }
-            this.Structure = newStructure;
-        }
 
         // Note!!!: Cannot clone method OriginStructure
         public IBlock Clone()

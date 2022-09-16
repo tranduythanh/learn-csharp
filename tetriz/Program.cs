@@ -5,14 +5,7 @@ namespace Tetriz
     {
         private static Screen screen;
 
-        private static void InitKeyReading()
-        {
-            Thread keyReading = new Thread(ReadKeysThread);
-            keyReading.IsBackground = true;
-            keyReading.Start();
-        }
-
-        private static void ReadKeysThread()
+        private static void _readKeysThread()
         {
             Boolean loop = true;
             while (loop)
@@ -33,9 +26,17 @@ namespace Tetriz
             System.Environment.Exit(0);
         }
 
+        private static void _initKeyReading()
+        {
+            Thread keyReading = new Thread(_readKeysThread);
+            keyReading.IsBackground = true;
+            keyReading.Start();
+        }
+
+
         static void Main()
         {
-            InitKeyReading();
+            _initKeyReading();
             screen = new Screen(
                 Const.DefaultScreenWidth,
                 Const.DefaultScreenHeight);

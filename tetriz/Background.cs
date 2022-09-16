@@ -4,11 +4,6 @@ namespace Tetriz
     {
         private Matrix _matrix;
 
-        public Background(uint width, uint height)
-        {
-            this._matrix = InitMatrix(width, height);
-        }
-
         private Matrix InitMatrix(uint width, uint height)
         {
             Matrix _matrix = new Matrix();
@@ -22,6 +17,63 @@ namespace Tetriz
                 _matrix.Add(row);
             }
             return _matrix;
+        }
+
+        private Boolean IsValidPixel(int row, int col)
+        {
+            return
+                row >= 0 &&
+                col >= 0 &&
+                row < this._matrix.Height() &&
+                col < this._matrix.Width();
+        }
+
+        private Boolean IsFilledRow(List<String> row)
+        {
+            foreach (var pixel in row)
+                if (pixel == Const.Dot)
+                    return false;
+            return true;
+        }
+
+        private void TranslateRowIToK(int i, int k)
+        {
+            for (int x = 0; x < this._matrix.Width(); x++)
+            {
+                this._matrix[k][x] = this._matrix[i][x];
+                this._matrix[i][x] = Const.Dot;
+            }
+        }
+
+        private void TranslationRangeDown(int targetRowIndex)
+        {
+            if (targetRowIndex < 0)
+            {
+                return;
+            }
+
+            if (targetRowIndex >= this._matrix.Height())
+            {
+                return;
+            }
+
+            // translation upward
+            for (int i = targetRowIndex - 1; i > 0; i--)
+            {
+                TranslateRowIToK(i, i + 1);
+            }
+
+            // clear top row
+            for (int i = 0; i < this._matrix.Width(); i++)
+            {
+                this._matrix[0][i] = Const.Dot;
+            }
+            return;
+        }
+
+        public Background(uint width, uint height)
+        {
+            this._matrix = InitMatrix(width, height);
         }
 
         // This does not actually merge block to background.
@@ -49,14 +101,7 @@ namespace Tetriz
             return frame;
         }
 
-        private Boolean IsValidPixel(int row, int col)
-        {
-            return
-                row >= 0 &&
-                col >= 0 &&
-                row < this._matrix.Height() &&
-                col < this._matrix.Width();
-        }
+
 
         public void MergeBlock(IBlock block)
         {
@@ -145,49 +190,6 @@ namespace Tetriz
                 {
                     TranslationRangeDown(i);
                 }
-            }
-        }
-
-        private void TranslationRangeDown(int targetRowIndex)
-        {
-            if (targetRowIndex < 0)
-            {
-                return;
-            }
-
-            if (targetRowIndex >= this._matrix.Height())
-            {
-                return;
-            }
-
-            // translation upward
-            for (int i = targetRowIndex - 1; i > 0; i--)
-            {
-                TranslateRowIToK(i, i + 1);
-            }
-
-            // clear top row
-            for (int i = 0; i < this._matrix.Width(); i++)
-            {
-                this._matrix[0][i] = Const.Dot;
-            }
-            return;
-        }
-
-        private Boolean IsFilledRow(List<String> row)
-        {
-            foreach (var pixel in row)
-                if (pixel == Const.Dot)
-                    return false;
-            return true;
-        }
-
-        private void TranslateRowIToK(int i, int k)
-        {
-            for (int x = 0; x < this._matrix.Width(); x++)
-            {
-                this._matrix[k][x] = this._matrix[i][x];
-                this._matrix[i][x] = Const.Dot;
             }
         }
 

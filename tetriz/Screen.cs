@@ -38,32 +38,7 @@ namespace Tetriz
             return newBlock;
         }
 
-        public Screen(int width, int height)
-        {
-            this._score = 0;
-            this._background = new Background(
-                Const.DefaultScreenWidth,
-                Const.DefaultScreenHeight);
-            this._currentBlock = this._randomBlock();
-            this._nextBlock = this._randomBlock();
-            this._width = width;
-            this._height = height;
-
-            // set init position to block
-            this._currentBlock.ToCenterX(this._width);
-            this._currentBlock.ToHighestPosition();
-        }
-
-        public void HandleKey(ConsoleKey key)
-        {
-            lock (this)
-            {
-                _HandleKey(key);
-                Console.Beep();
-            }
-        }
-
-        private void _HandleKey(ConsoleKey key)
+        private void _handleKey(ConsoleKey key)
         {
             switch (key)
             {
@@ -75,7 +50,7 @@ namespace Tetriz
                     {
                         this._currentBlock.MoveRight();
                     }
-                    Draw();
+                    _draw();
                     break;
 
                 case ConsoleKey.RightArrow:
@@ -86,7 +61,7 @@ namespace Tetriz
                     {
                         this._currentBlock.MoveLeft();
                     }
-                    Draw();
+                    _draw();
                     break;
 
                 case ConsoleKey.UpArrow:
@@ -98,7 +73,7 @@ namespace Tetriz
                         this._currentBlock.RotateLeft();
                     }
 
-                    Draw();
+                    _draw();
                     break;
 
                 case ConsoleKey.DownArrow:
@@ -108,9 +83,9 @@ namespace Tetriz
                     }
                     else
                     {
-                        PrepareForNextTurn();
+                        this._prepareForNextTurn();
                     }
-                    Draw();
+                    _draw();
                     break;
 
                 case ConsoleKey.Spacebar:
@@ -122,11 +97,11 @@ namespace Tetriz
                         }
                         else
                         {
-                            PrepareForNextTurn();
+                            this._prepareForNextTurn();
                             break;
                         }
                     }
-                    Draw();
+                    _draw();
                     break;
 
                 default:
@@ -135,7 +110,7 @@ namespace Tetriz
             this._keyPressed = key;
         }
 
-        private void Draw()
+        private void _draw()
         {
             Console.Clear();
 
@@ -161,12 +136,12 @@ namespace Tetriz
             Console.WriteLine();
         }
 
-        private void PrepareForNextTurn()
+        private void _prepareForNextTurn()
         {
             lock (this)
             {
                 this._background.MergeBlock(this._currentBlock);
-                Scoring();
+                this._scoring();
                 this._currentBlock = this._nextBlock.Clone();
                 this._nextBlock = _randomBlock();
                 this._currentBlock.ToCenterX(this._width);
@@ -174,12 +149,12 @@ namespace Tetriz
 
                 if (!this._background.CanMoveDown(this._currentBlock))
                 {
-                    GameOver();
+                    this._gameOver();
                 }
             }
         }
 
-        private void Scoring()
+        private void _scoring()
         {
             int delta = this._background.CountFilledRows();
             if (delta > 0)
@@ -190,14 +165,38 @@ namespace Tetriz
             }
         }
 
-        private void GameOver()
+        private void _gameOver()
         {
-            Draw();
+            _draw();
             Console.WriteLine(Const.TextGameOver);
             Console.CursorVisible = true;
             System.Environment.Exit(0);
         }
 
+        public Screen(int width, int height)
+        {
+            this._score = 0;
+            this._background = new Background(
+                Const.DefaultScreenWidth,
+                Const.DefaultScreenHeight);
+            this._currentBlock = this._randomBlock();
+            this._nextBlock = this._randomBlock();
+            this._width = width;
+            this._height = height;
+
+            // set init position to block
+            this._currentBlock.ToCenterX(this._width);
+            this._currentBlock.ToHighestPosition();
+        }
+
+        public void HandleKey(ConsoleKey key)
+        {
+            lock (this)
+            {
+                this._handleKey(key);
+                Console.Beep();
+            }
+        }
 
         public Boolean MoveDownAndCheck()
         {
@@ -206,12 +205,12 @@ namespace Tetriz
                 this._currentBlock.MoveDown();
                 if (!this._background.CanMoveDown(this._currentBlock))
                 {
-                    PrepareForNextTurn();
+                    this._prepareForNextTurn();
                 }
             }
             else
             {
-                PrepareForNextTurn();
+                this._prepareForNextTurn();
                 return false;
             }
             return true;
@@ -220,7 +219,7 @@ namespace Tetriz
         public void Run()
         {
             Console.CursorVisible = false;
-            Draw();
+            _draw();
             while (true)
             {
                 System.Threading.Thread.Sleep(Const.FrameDelay);
@@ -232,9 +231,9 @@ namespace Tetriz
                     }
                     else
                     {
-                        PrepareForNextTurn();
+                        this._prepareForNextTurn();
                     }
-                    Draw();
+                    _draw();
                 }
             }
         }
