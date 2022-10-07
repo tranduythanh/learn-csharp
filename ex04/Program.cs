@@ -17,11 +17,11 @@
             Console.WriteLine(d2.Next().Next());
 
             Classroom c = new Classroom(5);
-            c.AddStudent("Tran", "Duy Thanh", 9, 7);
-            c.AddStudent("Nguyen", "Hien Minh Chau", 9, 9);
-            c.AddStudent("Vo", "Quang Nguyen", 7, 8);
-            c.AddStudent("Nguyen", "Quynh Nhu", 7, 5);
-            c.AddStudent("Phan", "Nguyen Quoc Quyen", 9, 5);
+            c.AddStudent("Trần", "Duy Thanh", 9, 7);
+            c.AddStudent("Nguyễn", "Hiền Minh Châu", 9, 9);
+            c.AddStudent("Võ", "Quang Nguyên", 7, 8);
+            c.AddStudent("Nguyễn", "Quỳnh Như", 7, 5);
+            c.AddStudent("Phan", "Nguyễn Quốc Quyên", 9, 5);
             c.Print();
             Console.WriteLine("Avg Literature: {0}", c.ClassAvgLiterature());
             Console.WriteLine("Avg Math:       {0}", c.ClassAvgMath());
@@ -31,7 +31,6 @@
             Console.WriteLine("-------- Sort by avg and name -------");
             c.SortByAvgAndName();
             c.Print();
-
         }
     }
 }
