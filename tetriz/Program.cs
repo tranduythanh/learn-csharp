@@ -3,7 +3,7 @@ namespace Tetriz
 {
     class Program
     {
-        private static Screen screen;
+        private static Screen screen = new Screen(0,0);
 
         private static void _readKeysThread()
         {
