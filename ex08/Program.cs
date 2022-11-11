@@ -1,6 +1,10 @@
-﻿namespace ex08;
+﻿using System;
 
-using System;
+
+namespace ex08 {
+    abstract class IFood {
+    public abstract void Print();
+}
 
 class Food: IFood
 {
@@ -57,10 +61,6 @@ class FoodWithoutBox: Food {
     }
 }
 
-abstract class IFood {
-    public abstract void Print();
-}
-
 class Program {
     static void Main() {
         Console.WriteLine("Number of FoodWithBox: ");
@@ -90,4 +90,5 @@ class Program {
             item.Print();
         }
     }
+}
 }
