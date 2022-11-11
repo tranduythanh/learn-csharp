@@ -63,16 +63,22 @@ abstract class IFood {
 
 class Program {
     static void Main() {
+        Console.WriteLine("Number of FoodWithBox: ");
+        Int64 m = Convert.ToInt64(Console.ReadLine());
+
+        Console.WriteLine("Number of FoodWithoutBox: ");
+        Int64 n = Convert.ToInt64(Console.ReadLine());
+
         List<IFood> ret = new List<IFood>{};
-        
-        for (int i = 0; i < 2; i++)
+
+        for (int i = 0; i < m; i++)
         {
             FoodWithBox f = new FoodWithBox("", 0, DateTime.Now);    
             f.InputFromKeyboard();
             ret.Add(f);
         }
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < n; i++)
         {
             FoodWithoutBox f = new FoodWithoutBox("", 0, 0);    
             f.InputFromKeyboard();
