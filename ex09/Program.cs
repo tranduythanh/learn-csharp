@@ -98,9 +98,9 @@
             Director d1 = new Director("Giám đốc 1");
             Director d2 = new Director("Giám đốc 2");
 
-            Manager m11 = d1.AddManager("Trường phòng 11");
-            Manager m12 = d1.AddManager("Trường phòng 12");
-            Manager m21 = d2.AddManager("Trường phòng 21");
+            Manager m11 = d1.AddManager("Trưởng phòng 11");
+            Manager m12 = d1.AddManager("Trưởng phòng 12");
+            Manager m21 = d2.AddManager("Trưởng phòng 21");
 
             Staff s111 = m11.AddStaff("Nhân viên 111");
             Staff s121 = m12.AddStaff("Nhân viên 121");
