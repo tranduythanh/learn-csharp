@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:flappy_bird.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="900"
+        x:Class="flappy_bird.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="flappy_bird">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Border Background="Blue"
+            BorderBrush="Black"
+            BorderThickness="0"
+            Padding="0">
+        <StackPanel Background="LightBlue"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+            <TextBlock Margin="5" FontSize="18" HorizontalAlignment="Center" Text="{Binding Greeting}"/>
+            <TextBlock Margin="5" FontSize="18" HorizontalAlignment="Center" Text="{Binding GameTimerValue}"/>
+            <Canvas HorizontalAlignment="Stretch">
+                <Rectangle 
+                    Fill="Blue"
+                    Height="44" 
+                    Width="44" 
+                    Canvas.Left="{Binding PilarPosLeft}" 
+                    Canvas.Top="{Binding PilarPosTop}"
+                />
+            </Canvas>
+        </StackPanel>
+    </Border>
+
+</Window>
