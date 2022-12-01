@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Timers;
-using System.Windows.Input;
 using ReactiveUI;
 using Avalonia.Collections;
-using System.Windows.Markup;
 
 namespace flappy_bird.ViewModels;
 
@@ -53,19 +51,15 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)  {
-        Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}", e.SignalTime);
         this.GameTimerValue = e.SignalTime.ToString();
         
         // move all pilars
-        AvaloniaList<PilarViewModel> ret = new();
-        for(int i = 0; i < this.Pilars.Count; i++) {
-            this.Pilars[i].MoveLeft(1);
-            ret.Add(this.Pilars[i]);
+        foreach(var p in this.Pilars) {
+            p.MoveLeft(1);
         }
-        this.Pilars = ret;
         this.CheckToRotatePilars();
+        this.Debug();
 
-        Console.WriteLine(Console.WindowWidth);
         // move the birds
     }
 
@@ -73,15 +67,26 @@ public class MainWindowViewModel : ViewModelBase
         return this.rnd.Next(this.pillarPaddingRange[0], this.pillarPaddingRange[1]);
     }
 
+    private int RandomPilarTop() {
+        int ret = this.rnd.Next(ScreenHeight/3, ScreenHeight*2/3);
+        return Convert.ToInt32(Math.Pow(-1, this.rnd.Next(0, 2))) * ret;
+    }
+
     private void SetupPilars() {
+        // init 4 pilars with default value
         AvaloniaList<PilarViewModel> ret = new(){
-            new(pilarWidth, 60, 1000, 0),
-            new(pilarWidth, 60, 1000, 0),
-            new(pilarWidth, 60, 1000, 0),
-            new(pilarWidth, 60, 1000, 0),
+            new(pilarWidth, ScreenHeight, 1000, 0),
+            new(pilarWidth, ScreenHeight, 1000, 0),
+            new(pilarWidth, ScreenHeight, 1000, 0),
+            new(pilarWidth, ScreenHeight, 1000, 0),
         };
+        // setup pilar padding
         for (int i = 1; i<ret.Count; i++) {
             ret[i].Left = ret[i-1].Left + this.RandomPilarPadding();
+        }
+        // setup pilar top
+        foreach(var p in ret) {
+            p.Top = this.RandomPilarTop();
         }
         this.Pilars = ret;
     }
@@ -90,9 +95,18 @@ public class MainWindowViewModel : ViewModelBase
         if (this.Pilars[0].Left >= -pilarWidth) {
             return;
         }
-        int lastIdx = this.Pilars.Count -1;
-        this.Pilars.Move(0, lastIdx);
+        int lastIdx = this.Pilars.Count-1;
+        this.Pilars.RemoveAt(0);
+        this.Pilars.Add(new(pilarWidth, ScreenHeight, 1000, 0));
         this.Pilars[lastIdx].Left = this.Pilars[lastIdx-1].Left+this.RandomPilarPadding();
+        this.Pilars[lastIdx].Top = this.RandomPilarTop();
+    }
+
+    private void Debug() {
+        Console.WriteLine("-----------------------");
+        foreach(var p in this.Pilars) {
+            Console.WriteLine(p);
+        }
     }
 
     // get screen size
