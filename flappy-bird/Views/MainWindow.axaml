@@ -16,18 +16,35 @@
             BorderBrush="Black"
             BorderThickness="0"
             Padding="0">
-        <StackPanel Background="LightBlue"
+        <StackPanel Background="Ivory"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">
             <TextBlock Margin="5" FontSize="18" HorizontalAlignment="Center" Text="{Binding Greeting}"/>
             <TextBlock Margin="5" FontSize="18" HorizontalAlignment="Center" Text="{Binding GameTimerValue}"/>
-            <Canvas HorizontalAlignment="Stretch">
-                <Rectangle 
-                    Fill="Blue"
-                    Height="44" 
-                    Width="44" 
-                    Canvas.Left="{Binding PilarPosLeft}" 
-                    Canvas.Top="{Binding PilarPosTop}"
+            <Canvas HorizontalAlignment="Stretch" Background="Red">
+                <Rectangle Fill="Blue"
+                    Height=     "{Binding Pilars[0].Height}" 
+                    Width=      "{Binding Pilars[0].Width}" 
+                    Canvas.Left="{Binding Pilars[0].Left}" 
+                    Canvas.Top= "{Binding Pilars[0].Top}"
+                />
+                <Rectangle Fill="Blue"
+                    Height=     "{Binding Pilars[1].Height}" 
+                    Width=      "{Binding Pilars[1].Width}" 
+                    Canvas.Left="{Binding Pilars[1].Left}" 
+                    Canvas.Top= "{Binding Pilars[1].Top}"
+                />
+                <Rectangle Fill="Blue"
+                    Height=     "{Binding Pilars[2].Height}" 
+                    Width=      "{Binding Pilars[2].Width}" 
+                    Canvas.Left="{Binding Pilars[2].Left}" 
+                    Canvas.Top= "{Binding Pilars[2].Top}"
+                />
+                <Rectangle Fill="Blue"
+                    Height=     "{Binding Pilars[3].Height}" 
+                    Width=      "{Binding Pilars[3].Width}" 
+                    Canvas.Left="{Binding Pilars[3].Left}" 
+                    Canvas.Top= "{Binding Pilars[3].Top}"
                 />
             </Canvas>
         </StackPanel>
