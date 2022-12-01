@@ -4,6 +4,7 @@ using System.Timers;
 using System.Windows.Input;
 using ReactiveUI;
 using Avalonia.Collections;
+using System.Windows.Markup;
 
 namespace flappy_bird.ViewModels;
 
@@ -11,9 +12,9 @@ public class MainWindowViewModel : ViewModelBase
 {
 
     const int pilarWidth = 100;
-    const int screenHeight = 0;
     const int intervalMilliSec = 5;
-    private int screenWidth = 0;
+    const int ScreenWidth = 720;
+    const int ScreenHeight = 720;
     private List<int> pillarPaddingRange = new(){400,600}; 
     private Random rnd = new Random();
 
@@ -47,7 +48,7 @@ public class MainWindowViewModel : ViewModelBase
         // setup pilars
         this.SetupPilars();
         
-
+        
         // setup the angry bird =)))
     }
 
@@ -64,6 +65,7 @@ public class MainWindowViewModel : ViewModelBase
         this.Pilars = ret;
         this.CheckToRotatePilars();
 
+        Console.WriteLine(Console.WindowWidth);
         // move the birds
     }
 
