@@ -1,6 +1,4 @@
 using System;
-using System.Timers;
-using System.Windows.Input;
 using ReactiveUI;
 
 namespace flappy_bird.ViewModels;
@@ -12,17 +10,13 @@ public class PilarViewModel : ViewModelBase
     private int left;
     public int Left{
         get => this.left;
-        set {
-            this.RaiseAndSetIfChanged(ref this.left, value);
-        }
+        set => this.RaiseAndSetIfChanged(ref this.left, value);
     }
     
     private int top;
     public int Top{
         get => this.top;
-        set {
-            this.RaiseAndSetIfChanged(ref this.top, value);
-        }
+        set => this.RaiseAndSetIfChanged(ref this.top, value);
     }
 
     public PilarViewModel(int width, int height, int left, int top) {

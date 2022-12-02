@@ -10,6 +10,7 @@ public class MainWindowViewModel : ViewModelBase
 {
 
     const int pilarWidth = 100;
+    const int birdSize = 50;
     const int intervalMilliSec = 5;
     const int ScreenWidth = 720;
     const int ScreenHeight = 720;
@@ -30,11 +31,16 @@ public class MainWindowViewModel : ViewModelBase
 
     private AvaloniaList<PilarViewModel> pilars;
     public AvaloniaList<PilarViewModel> Pilars {
-        get => pilars;
+        get => this.pilars;
         set {
             this.RaiseAndSetIfChanged(ref this.pilars, value);
-            Console.WriteLine(pilars[0]);
         } 
+    }
+
+    private BirdViewModel bird;
+    public BirdViewModel Bird {
+        get => this.bird;
+        set => this.RaiseAndSetIfChanged(ref this.bird, value);
     }
 
     public MainWindowViewModel() {
@@ -46,8 +52,8 @@ public class MainWindowViewModel : ViewModelBase
         // setup pilars
         this.SetupPilars();
         
-        
         // setup the angry bird =)))
+        this.SetupBird();
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)  {
@@ -57,10 +63,12 @@ public class MainWindowViewModel : ViewModelBase
         foreach(var p in this.Pilars) {
             p.MoveLeft(1);
         }
+        
         this.CheckToRotatePilars();
-        this.Debug();
+        
+        this.Bird.Fly(intervalMilliSec);
 
-        // move the birds
+        this.Debug();
     }
 
     private int RandomPilarPadding() {
@@ -102,14 +110,18 @@ public class MainWindowViewModel : ViewModelBase
         this.Pilars[lastIdx].Top = this.RandomPilarTop();
     }
 
+    private void SetupBird() {
+        // init 4 pilars with default value
+        this.Bird  = new(birdSize, birdSize, ScreenWidth/4, ScreenHeight/2);
+    }
+
     private void Debug() {
         Console.WriteLine("-----------------------");
+        Console.WriteLine(this.Bird);
         foreach(var p in this.Pilars) {
             Console.WriteLine(p);
         }
     }
-
-    // get screen size
 
     // handle key down
 

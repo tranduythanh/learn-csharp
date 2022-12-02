@@ -47,6 +47,12 @@
                     Canvas.Left="{Binding Pilars[3].Left}" 
                     Canvas.Top= "{Binding Pilars[3].Top}"
                 />
+                <Ellipse Fill="DarkRed"
+                    Height=     "{Binding Bird.Height}" 
+                    Width=      "{Binding Bird.Width}" 
+                    Canvas.Left="{Binding Bird.Left}" 
+                    Canvas.Top= "{Binding Bird.Top}"
+                />
             </Canvas>
         </StackPanel>
     </Border>
