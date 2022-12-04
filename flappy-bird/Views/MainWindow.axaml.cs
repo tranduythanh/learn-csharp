@@ -8,7 +8,6 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
-        Console.WriteLine(this.Height);
         InitializeComponent();
     }
 }
