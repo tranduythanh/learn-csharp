@@ -30,7 +30,7 @@ public class BirdViewModel : ViewModelBase
         this.SkyHeight = skyHeight;
     }
 
-    public void Jumb(double speed) {
+    public void Jump(double speed) {
         lock(this) {
             this.SpeedY += speed;
         }

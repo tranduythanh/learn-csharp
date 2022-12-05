@@ -60,13 +60,7 @@ public class MainWindowViewModel : ViewModelBase
         gameTimer.Start();
 
     }
-
-    public ReactiveCommand<Unit, Unit> BirdJumb { get; }
-
-    public void BirdJumbHandler() {
-        this.Bird.Jumb(1000);
-    }
-
+    
     private void OnTimedEvent(Object source, ElapsedEventArgs e)  {
         this.GameTimerValue = e.SignalTime.ToString();
         
@@ -136,7 +130,7 @@ public class MainWindowViewModel : ViewModelBase
         if (e.Key != Key.Space) {
             return;
         }
-        this.Bird.Jumb(100);
+        this.Bird.Jump(100);
     }
 
     // check collision
