@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Timers;
+using Avalonia.Input;
 using ReactiveUI;
 using Avalonia.Collections;
+using System.Reactive;
 
 namespace flappy_bird.ViewModels;
 
@@ -29,31 +31,40 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private AvaloniaList<PilarViewModel> pilars;
+    private AvaloniaList<PilarViewModel> _pilars;
     public AvaloniaList<PilarViewModel> Pilars {
-        get => this.pilars;
+        get => this._pilars;
         set {
-            this.RaiseAndSetIfChanged(ref this.pilars, value);
+            this.RaiseAndSetIfChanged(ref this._pilars, value);
         } 
     }
 
-    private BirdViewModel bird;
+    private BirdViewModel _bird; // new(ScreenHeight, birdSize, birdSize, ScreenWidth/4, ScreenHeight/2);
     public BirdViewModel Bird {
-        get => this.bird;
-        set => this.RaiseAndSetIfChanged(ref this.bird, value);
+        get => this._bird;
+        set {
+            this.RaiseAndSetIfChanged(ref this._bird, value);
+        } 
     }
 
     public MainWindowViewModel() {
-        // setup timer
-        gameTimer.AutoReset = true;
-        gameTimer.Elapsed += this.OnTimedEvent;
-        gameTimer.Start();
-
         // setup pilars
         this.SetupPilars();
         
         // setup the angry bird =)))
         this.SetupBird();
+
+        // setup timer
+        gameTimer.AutoReset = true;
+        gameTimer.Elapsed += this.OnTimedEvent;
+        gameTimer.Start();
+
+    }
+
+    public ReactiveCommand<Unit, Unit> BirdJumb { get; }
+
+    public void BirdJumbHandler() {
+        this.Bird.Jumb(1000);
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)  {
@@ -111,19 +122,22 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     private void SetupBird() {
-        // init 4 pilars with default value
-        this.Bird  = new(birdSize, birdSize, ScreenWidth/4, ScreenHeight/2);
+        this.Bird  = new BirdViewModel(ScreenHeight, birdSize, birdSize, ScreenWidth/4, ScreenHeight/2);
     }
 
     private void Debug() {
-        Console.WriteLine("-----------------------");
         Console.WriteLine(this.Bird);
-        foreach(var p in this.Pilars) {
-            Console.WriteLine(p);
-        }
+        // foreach(var p in this.Pilars) {
+        //     Console.WriteLine(p);
+        // }
     }
 
-    // handle key down
+    public void HandleKeyDown(KeyEventArgs e) {
+        if (e.Key != Key.Space) {
+            return;
+        }
+        this.Bird.Jumb(100);
+    }
 
     // check collision
 }

@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:flappy_bird.ViewModels"
+        xmlns:e="clr-namespace:EventBinder;assembly=EventBinder"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="900"
@@ -15,7 +16,6 @@
 
     <Border Background="Blue"
             BorderBrush="Black"
-            BorderThickness="0"
             Padding="0">
         <StackPanel Background="Ivory"
                     HorizontalAlignment="Stretch"
